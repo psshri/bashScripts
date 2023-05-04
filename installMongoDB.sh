@@ -1,32 +1,27 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt ugrade
+sudo apt upgrade -y
 
-curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+sudo apt install gnupg -y
 
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
+   --dearmor
+   
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
-sudo apt install mongodb-org
+sudo apt update
 
-# sudo systemctl start mongod.service
+sudo apt install -y mongodb-org
+
+sudo chown -R mongodb:mongodb /var/lib/mongodb
+sudo chown mongodb:mongodb /tmp/mongodb-27017.sock
+
+sudo systemctl start mongod
+
 # sudo systemctl status mongod
-# sudo systemctl enable mongod
-# mongo --eval 'db.runCommand({ connectionStatus: 1 })'
-# sudo systemctl status mongod
+
 # sudo systemctl stop mongod
-# sudo systemctl start mongod
-# sudo systemctl restart mongod
-# sudo systemctl disable mongod
-# sudo systemctl enable mongod
 
-
-in the docker container
-apt update
-apt upgrade -y
-apt install curl -y
-apt install gnupg -y
-apt install lsb-release -y
-
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-apt update
+# mongosh
