@@ -22,3 +22,9 @@ sudo apt update
 
 
 sudo apt-get install terraform
+
+# following method installs a specific version of terraform
+wget https://releases.hashicorp.com/terraform/1.4.7/terraform_1.4.7_linux_386.zip
+unzip terraform_1.4.7_linux_386.zip 
+sudo mv terraform /usr/local/bin
+terraform -version
